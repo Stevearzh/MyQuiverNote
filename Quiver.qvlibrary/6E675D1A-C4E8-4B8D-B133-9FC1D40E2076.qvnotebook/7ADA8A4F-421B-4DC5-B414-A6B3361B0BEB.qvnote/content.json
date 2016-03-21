@@ -1,0 +1,27 @@
+{
+  "title": "鼠标位置",
+  "cells": [
+    {
+      "type": "text",
+      "data": "每个鼠标事件有两个属性用于确定鼠标的当前位置：pageX 与 pageY。结合这两个属性以及 canvas 元素相对文件的偏移量，可以确定鼠标在 canvas 元素上的相对坐标。但并不是所有的浏览器都支持这两个属性，在这些情况下，可能要用到 clientX 与 clientY 属性。"
+    },
+    {
+      "type": "text",
+      "data": "每次需要鼠标位置的时候都要计算偏移量会比较麻烦，同时考虑到代码的简洁性，可以将这段跨平台的、计算鼠标位置的代码封装到工具函数 utils.captureMouse 中："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "utils.captureMouse = (element) => {\n  let mouse = {\n    x: 0,\n    y: 0\n  };\n  \n  element.addEventListener('mousemove', (event) => {\n    let x, y;\n    \n    if (event.pageX || event.pageY) {\n      x = event.pageX;\n      y = event.pageY;\n    } else {\n      x = event.clientX + document.body.scrollLeft +\n          document.documentElement.scrollLeft;\n      y = event.clientY + document.body.scrollTop +\n          document.documentElement.scrollTop;\n    }\n    \n    mouse.x = x - element.offsetLeft;\n    mouse.y = y - element.offsetTop;\n  }, false);\n  \n  return mouse;\n};"
+    },
+    {
+      "type": "text",
+      "data": "该函数接受一个 DOM 元素作为参数并为之添加一个 mousemove 事件的处理程序，最终返回一个包含 x 与 y 属性的对象。当鼠标在该元素上移动时，处理程序会根据事件发生的位置（每个浏览器提供不同支持）以及该元素相对于文件的偏移量计算出鼠标在元素上的相对位置，然后将表示位置的两个值赋值给作为函数返回值的对象，最终可以在调用该函数的主脚本中访问它们。鼠标的 x、y 坐标值是相对于元素的左上角坐标 (0, 0) 而言的。"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let canvas = document.getElementById('canvas'),\n    mouse  = utils.captureMouse(canvas);"
+    }
+  ]
+}

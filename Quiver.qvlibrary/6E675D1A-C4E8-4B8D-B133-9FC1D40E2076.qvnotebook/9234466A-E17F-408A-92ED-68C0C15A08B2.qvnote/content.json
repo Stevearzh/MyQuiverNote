@@ -1,0 +1,32 @@
+{
+  "title": "触摸位置",
+  "cells": [
+    {
+      "type": "text",
+      "data": "类似 utils.captureMouse 函数，可以使用 utils.captureTouch 函数确定第一个手指在元素上出没的位置。两个函数的实现类似，不过由于可能出现没有手指触摸到屏幕的情况，因此为返回对象添加了一个 isPressed 属性。同时，如果没有手指触摸到屏幕，x 与 y 属性就会设置为 null。"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "utils.captureTouch = (element) => {\n  let touch = {\n    x: null,\n    y: null,\n    isPressed: false\n  };\n  \n  element.addEventListener('touchstart', (event) => {\n    touch.isPressed = true;\n  }, false);\n  \n  element.addEventListener('touchend', (event) => {\n    touch.isPressed = false;\n    touch.x = null;\n    touch.y = null;\n  }, false);\n  \n  element.addEventListener('touchmove', (event) => {\n    let x, y,\n        touch_event = event.touches[0];   // first touch\n        \n    if (touch_event.pageX || touch_event.pageY) {\n      x = touch_event.pageX;\n      y = touch_event.pageY;\n    } else {\n      x = touch_event.clientX + document.body.scrollLeft +\n          document.documentElement.scrollLeft;\n      y = touch_event.clientY + document.body.scrollTop +\n          document.documentElement.scrollTop;\n    }\n    \n    touch.x = x - offsetLeft;\n    touch.y = y - offsetTop;\n  }, false);\n  \n  return touch;\n};"
+    },
+    {
+      "type": "text",
+      "data": "以上函数定义与获取鼠标位置的那个版本类似，不过加入了一些额外的事件监听器。它接收一个 HTML 元素作为参数同时返回一个包含 x、y 与 isPressed 属性的对象。Touchmove 事件处理程序负责追踪第一个触摸点与元素的相对坐标，其中一些跨浏览器的代码用来计算偏移量。还分别为 touchstart 与 touchend 事件添加了事件处理程序，其中会分别将 isPressed 属性设置为 true 与 false，如果不存在有效的触摸点，touchend 事件处理程序还会将 x、y 属性设置为 null。"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let canvas = document.getElementById('canvas'),\n    touch  = utils.captureTouch(canvas);"
+    },
+    {
+      "type": "text",
+      "data": "在访问 x、y 属性之前务必确保此时有触摸点按下，否则，它们的值将为 null，并很可能把动画计算弄错。因此，在查询触摸位置前，务必检查是否有触摸点按下："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "if (touch.isPressed) {\n  console.log('x: ' + touch.x + ', y: ' + touch.y);\n}"
+    }
+  ]
+}

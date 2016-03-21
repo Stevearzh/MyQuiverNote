@@ -1,0 +1,71 @@
+{
+  "title": "canvas 上的颜色",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "canvas 元素上的颜色使用了 CSS 风格的字符串，该字符串包含以下格式："
+    },
+    {
+      "type": "markdown",
+      "data": "* “#RRGGBB” —— 十六进制格式，红绿蓝三原色的范围为 0~9、a~f\n* “RGB” —— 简写的十六进制格式，转化为 6 位数字时重复三原色的值，而不是追加 0。例如，“#fb0”会转化为“#ffbb00”。\n* “rgb(R, G, B)” —— 函数表达式，三原色分别由 0~255 的整数值表示。\n* “rgba(R, G, B, A)” —— 包含透明度的函数表达式，与上述表达式类似，其中 alpha 参数由 0~1 的小数构成。需要指定透明度的颜色必须使用该格式。"
+    },
+    {
+      "type": "markdown",
+      "data": "## 从十六进制转换到十进制"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "console.log(hexValue);"
+    },
+    {
+      "type": "markdown",
+      "data": "## 从十进制转换到十六进制"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "console.log(decimalValue.toString(16));"
+    },
+    {
+      "type": "markdown",
+      "data": "## 组合三原色"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let color = red << 16 | green << 8 | blue;"
+    },
+    {
+      "type": "markdown",
+      "data": "## 提取三原色"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let red   = color24 >> 16 & 0xFF,\n    green = color24 >> 8 & 0xFF,\n    blue  = color24 & 0xFF;"
+    },
+    {
+      "type": "markdown",
+      "data": "## 与颜色相关的工具函数"
+    },
+    {
+      "type": "text",
+      "data": "第一个工具函数 utils.colorToRGB 接受一个表示颜色值的数字或十六进制字符串作为输入参数，然后抽取出各个独立的三原色，并将它们拼接成一个 CSS 风格的函数作为返回值。此外，该函数还接受一个可选的第二参数用于指定 alpha 值，该值必须是 0~1 范围内的一个小数。"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "utils.colorToRGB = (color, alpha = 1) => {\n  // if string format, convert to number\n  if (typeof color === 'string' && color[0] === '#') {\n    color = window.parseInt(color.slice(1), 16);\n  }\n  \n  // extract component values\n  let r = color >> 16 & 0xff,\n      g = color >> 8 & 0xff,\n      b = color & 0xff,\n      a = (alpha < 0) ? 0 : ((alpha > 1) ? 1 : alpha);   // check range\n      \n  // use 'rgba' if needed\n  if (a === 1) {\n    return 'rgb(' + r + ', ' + g + ', ' + b + ')';\n  } else {\n    return 'rgb(' + r + ', ' + g + ', ' + b + ', ' + a + ')';\n  }\n};"
+    },
+    {
+      "type": "text",
+      "data": "第二个工具函数比较简单，不过却为实现颜色值在数字和字符串之间的相互转换减少了很大的麻烦。utils.parseColor 函数可以将一个颜色的数字值转换为一个十六进制格式的字符串，也可以将一个十六进制格式的字符串还原为一个数字值。"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "utils.parseColor = (color, toNumber) => {\n  if (toNumber === true) {\n    if (typeof color === 'number') {\n      return (color | 0);   // chop off decimal\n    }\n    \n    if (typeof color === 'string' && color[0] === '#') {\n      color = color.slice(1);\n    }\n    \n    return window.parseInt(color, 16);\n  } else {\n    if (typeof color === 'number') {\n      // make sure our hexadecimal number is padded out\n      color = '#' + ('00000' + (color | 0).toString(16)).substr(-6);\n    }\n    \n    return color;\n  }\n};"
+    }
+  ]
+}

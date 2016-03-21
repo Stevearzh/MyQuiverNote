@@ -1,0 +1,51 @@
+{
+  "title": "绘图上下文、清除绘图区域",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## canvas 上下文"
+    },
+    {
+      "type": "text",
+      "data": "每个 canvas 元素都包含一个绘图上下文，通过它可以访问绘图 API。如下所示："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let canvas  = document.getElementById('canvas'),\n    context = canvas.getContext('2d');"
+    },
+    {
+      "type": "text",
+      "data": "第一行代码使用 DOM 接口通过 id ‘canvas’ 查找 canvas 元素。随后调用该对象上的 getContext 方法并传入字符串参数 ‘2d’，该参数用于指定将要使用的绘图 API 的类型。"
+    },
+    {
+      "type": "markdown",
+      "data": "## 使用 clearRect 消除图案"
+    },
+    {
+      "type": "text",
+      "data": "在大多数的动画中，必须在绘制下一帧图案前清除 canvas，通过这种方法可以模拟出物体正在运动的效果。绘制图案，擦除，再将其绘制到另一个位置，就可以把一系列图像模拟成一个物体发生了移动，而不仅仅是顺序地播放了两帧图像。"
+    },
+    {
+      "type": "text",
+      "data": "context.clearRect(x, y, width, height) 方法会通过将像素的颜色设置为全透明的黑色擦除指定区域内的每一个像素，从而清除指定的矩形区域。这样，之前绘制的任意图像都会被擦除掉。"
+    },
+    {
+      "type": "text",
+      "data": "由于需要使用该方法清除整个动画帧，因此可以按照如下方式调用："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "context.clearRect(0, 0, canvas.width, canvas.height);"
+    },
+    {
+      "type": "text",
+      "data": "这里创建了一个与整个 canvas 相同大小的矩形，并将其放置在 canvas 的原点，从而能够清除之前所绘制的所有图像。"
+    },
+    {
+      "type": "text",
+      "data": "如果能够确定某个动画只影响到帧的一个局部区域，那么可以在 clearRect 中指定一个稍小的矩形进而避免一些处理；另一个技巧是将多个 canvas 元素相互叠加，由于 canvas 是透明的，因此最终能看到的会是它们组合而成的图像。如果在动画中有一张不变的背景图片，而你又不想在每一帧中重复绘制，就可以使用这一技巧 —— 将这张背景图片作为一个背景 canvas 元素或 image 元素并在其之上用另一个 canvas 元素绘制动画。"
+    }
+  ]
+}

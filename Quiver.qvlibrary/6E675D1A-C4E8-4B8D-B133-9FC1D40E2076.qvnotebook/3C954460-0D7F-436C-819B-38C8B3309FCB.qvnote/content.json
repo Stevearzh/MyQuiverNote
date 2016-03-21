@@ -1,0 +1,87 @@
+{
+  "title": "使用填充色创建图形",
+  "cells": [
+    {
+      "type": "text",
+      "data": "context.fill() 方法会使用当前的填充样式填充子路径。"
+    },
+    {
+      "type": "text",
+      "data": "跟 context.strokeStyle 类似，context.fillStyle 属性通过一个十六进制格式或 RGB 格式的 CSS 风格的颜色字符串进行设置，其默认值为黑色，即“#000”。若想使用一种透明色，则需要将其格式化为正确的 RGBA 字符串。"
+    },
+    {
+      "type": "text",
+      "data": "可以在绘制图像时随时调用 context.fill() 方法，它会填充从起始点到当前位置中所有子路径所构成的形状。一般来说，绘图顺序如下："
+    },
+    {
+      "type": "markdown",
+      "data": "* beginPath;\n* moveTo;\n* lineStyle（若有的话）;\n* fillStyle（若有的话）;\n* 一系列 lineTo 与 quadraticCurveTo 方法（或类似的曲线）;\n* closePath（闭合图形）;\n* fill（图形的颜色）；\n* stroke（图形的轮廓）。"
+    },
+    {
+      "type": "text",
+      "data": "可以以任意顺序调用前 4 个方法而不用担心影响到将要绘制的图像。线条和填充的样式不是必须的，如果不指定的话将会采用默认的颜色（黑色）。"
+    },
+    {
+      "type": "text",
+      "data": "如果在填充图形前没有将线条画回到起始点，当调用 context.fill 方法时， canvas 还是会填充图形，只不过它不会关闭当前路径并绘制完整的轮廓。为了避免出现这种情况，会调用 context.closePath 方法，这样当前路径就会自动闭合了。"
+    },
+    {
+      "type": "markdown",
+      "data": "## 创建渐变填充色"
+    },
+    {
+      "type": "text",
+      "data": "渐变填充色包含至少两种颜色。图形的一部分以一种颜色开始，然后渐渐地变成另一种颜色，在其变化过程中会经历一种或多种预定义的颜色。"
+    },
+    {
+      "type": "text",
+      "data": "<span style=\"color: rgb(221, 221, 221);\">canvas 支持两种渐变填充：线性渐变或放射渐变。</span>"
+    },
+    {
+      "type": "text",
+      "data": "在<b><i><font color=\"#323232\" style=\"background-color: rgb(254, 250, 0);\">线性渐变填充</font></i></b>中，渐变色在一条直线上从一个点延伸到另一个点。使用 context.createLinearGradient(x0, y0, x1, y1) 方法将沿着点 (x0, y0) 与点 (x1, y1) 之间的直线填充渐变色。"
+    },
+    {
+      "type": "text",
+      "data": "<b><font color=\"#323232\"><i style=\"background-color: rgb(254, 250, 0);\">放射性渐变填充</i></font></b>从你指定的空间的中心开始向各个方向扩散，从而创造出一个圆形。渐变从圆心开始到圆的边缘结束。context.createRadialGradient(x0, y0, r0, x1, y1, r1) 方法以两个圆形作为参数，每个圆形由其圆心坐标和半径指定。"
+    },
+    {
+      "type": "markdown",
+      "data": "## 设置渐变色的颜色"
+    },
+    {
+      "type": "text",
+      "data": "为了实现渐变填充，在渐变过程中需要至少两种不同的颜色。在仅有两种颜色的情况下，填充的图形会从第一种颜色慢慢地变成第二种颜色。如果加入更多的中间色，填充的图形就会自然地从第一种颜色变到第二种颜色再到第三种颜色，以此类推，直到变成最终的颜色。"
+    },
+    {
+      "type": "text",
+      "data": "在设置颜色的同时，还需要为每种颜色指定它们的位置，该值是介于 0~1 的小数。每种颜色的这个位置值称为填充的比例 —— 比如，在两种颜色的填充中，分别指定 0 与 1 作为比例；而在一个等距的三色渐变中则会使用 0、0.5 与 1 作为填充比例，0.5 表示第二种颜色恰好位于第一种颜色和最后一种颜色的中间位置。"
+    },
+    {
+      "type": "text",
+      "data": "以颜色及其比例值作为参数，可以使用 Gradient 对象的 Gradient.addColorStop(ratio, color) 方法为渐变色添加颜色。如："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let gradient = context.createLinearGradient(0, 0, 100, 100);\ngradient.addColorStop(0, '#fff');\ngradient.addColorStop(1, '#f00');"
+    },
+    {
+      "type": "text",
+      "data": "以上代码在点 (0, 0) 至点 (100, 100) 之间创建一种线性渐变色，并定义两种颜色以及各自的比例，该渐变色将从白色渐变为红色。"
+    },
+    {
+      "type": "text",
+      "data": "然后将该渐变色赋值给 context.fillStyle 属性，并使用它绘制一个图形："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "context.fillStyle = gradient;\ncontext.fillRect(0, 0, 100, 100);"
+    },
+    {
+      "type": "text",
+      "data": "这里使用了一个简便方法 context.fillRect，它会像画线指令一样绘制并填充一个矩形而不用频繁地移动绘图笔。"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "title": "鼠标事件",
+  "cells": [
+    {
+      "type": "text",
+      "data": "为了捕获一个鼠标事件，必须为一个 DOM 元素添加一个监听器以处理事件。鼠标事件类型由字符串指定，不同浏览器所支持的事件类型各不相同。以下是最常见的一些事件："
+    },
+    {
+      "type": "markdown",
+      "data": "* mousedown\n* mouseup\n* click\n* dblclick\n* mousewheel\n* mousemove\n* mouseover\n* mouseout"
+    },
+    {
+      "type": "text",
+      "data": "因为我们只能引用到 cnava 元素，而无法引用到那些绘制在 canvas 上的线和形状，所以我们也无法为特定的线或形状添加事件监听器。如果你画了一个矩形并将其作为按钮，canvas 是无法获知按钮的边界的。为了检测到按钮单击，需要捕获 canvas 元素的鼠标事件并经由计算得出鼠标相对于按钮的位置，而这一切都必须由你自己完成。"
+    }
+  ]
+}

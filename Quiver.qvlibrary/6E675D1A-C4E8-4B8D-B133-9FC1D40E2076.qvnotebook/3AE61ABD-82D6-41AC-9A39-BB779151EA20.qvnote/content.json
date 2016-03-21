@@ -1,0 +1,35 @@
+{
+  "title": "使用 requestAnimationFrame 的动画循环",
+  "cells": [
+    {
+      "type": "text",
+      "data": "window.requestAnimationFrame 函数接收一个回调函数作为参数，并确保在重绘屏幕前执行该回调函数。在某些浏览器中，还支持一个可选的第二参数，可以通过它指定的一个 HTML 元素提供动画的可视区域。在回调函数中对程序的修改必定发生在下一个浏览器重绘事件之前。可以通过对 requestAnimationFrame 函数的链式调用实现动画循环。"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "(function drawFrame() {\n  window.requestAnimationFrame(drawFrame, canvas);\n  \n  // animation code...\n})();"
+    },
+    {
+      "type": "text",
+      "data": "该函数的第一行代码调用了 window.requestAnimationFrame 函数并将 draw Frame 函数自身的引用作为参数值传入。第二个可选参数是要绘制的 canvas。"
+    },
+    {
+      "type": "text",
+      "data": "当执行 drawFrame 函数时，window.requestAnimationFrame 将 drawFrame 函数放入队列等待在下一个动画间隔中再次执行，而当它再次执行时又会重复这一过程。由于不断地请求执行该函数，因此就串联成了一个循环。所以，该函数中定义的代码会不断的调用，使得我们可以在 &nbsp;canvas 上以细微的间隔时间绘制动画。"
+    },
+    {
+      "type": "text",
+      "data": "由于 requestAnimationFrame 是一个相对新的功能，为了保证代码的跨平台性，可以采用如下方式："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "if (!window.requestAnimationFrame) {\n  window.requestAnimationFrame = (\n    window.webkitRequestAnimationFrame ||\n    window.mozRequestAnimationFrame ||\n    window.oRequestAnimationFrame ||\n    window.msRequestAnimationFrame ||\n    callback => window.setTImeout(callback, 1000/60)\n  );\n}"
+    },
+    {
+      "type": "text",
+      "data": ""
+    }
+  ]
+}

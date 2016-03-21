@@ -1,0 +1,66 @@
+{
+  "title": "动画中的三角学",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## 三角学基础函数"
+    },
+    {
+      "type": "text",
+      "data": "<div>sine of angle = opposite / hypotenuse</div><div>正弦 &nbsp;= 对边 &nbsp;/ 斜边</div><div>cosine of angle = adjacent / hypotenuse</div><div>余弦 = 邻边 / 斜边</div><div>tangent of angle = opposite / adjacent</div><div>正切 = 对边 / 邻边</div>"
+    },
+    {
+      "type": "markdown",
+      "data": "## 角度与弧度互转"
+    },
+    {
+      "type": "text",
+      "data": "radians = degrees * Math.PI / 180<div>弧度 = 角度 * π / 180</div><div>degrees = radians * 180 / Math.PI</div><div>角度 = 弧度 *180 / π</div>"
+    },
+    {
+      "type": "markdown",
+      "data": "## 朝鼠标（或任意一点）旋转"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// substitue mouse.x, mouse,y with the x, y point to rotate to\ndx = mouse.x - object.x;\ndy = mouse.y - object.y;\nobject.rotation = Math.atan2(dy, dx) * 180 / Math.PI;"
+    },
+    {
+      "type": "markdown",
+      "data": "## 创建波"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// assign value to x, y or other property of an object,\n// use as drawing coordinates, etc.\n(function drawFrame() {\n  window.requestAnimationFrame(drawFrame, canvas);\n  \n  value = center + Math.sin(angle) * range;\n  angle += speed;\n})();"
+    },
+    {
+      "type": "markdown",
+      "data": "## 创建圆形"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// assign position to x and y of object or drawing coordinate\n(function drawFrame() {\n  window.requestAnimationFrame(drawFrame, canvas);\n  \n  xposition = centerX + Math.cos(angle) * radius;\n  yposition = centerY + Math.sin(angle) * radius;\n  angle += speed\n})();"
+    },
+    {
+      "type": "markdown",
+      "data": "## 创建椭圆形"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// assign position to x and y of object or drawing coordinate\n(function drawFrame() {\n  window.requestAnimationFrame(drawFrame, canvas);\n  \n  xposition = centerX + Math.cos(angle) * radiusX;\n  yposition = centerY + Math.sin(angle) * radiusY;\n  angle += speed;\n})();"
+    },
+    {
+      "type": "markdown",
+      "data": "## 获取两点间的距离"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// points are x1, y1 and x2, y2\n// can be object positions, mouse coordinates, etc.\ndx = x2 - x1;\ndy = y2 - y1;\ndist = Math.sqrt(dx * dx + dy * dy);"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "title": "绘制曲线",
+  "cells": [
+    {
+      "type": "text",
+      "data": "context.quadraticCurveTo(cpx, cpy, x, y) 接受两个点作为参数：第一个点是控制点，用于影响曲线的形状，第二个点是曲线的终点。该形状由一个名为二次贝塞尔曲线的标准算法决定。该函数会计算出从一个点到另一个点的一条曲线，该曲线会弯向但永不触及控制点，就好像他被控制点的引力所吸引了。"
+    },
+    {
+      "type": "markdown",
+      "data": "## 绘制一条穿越某个点的曲线"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// xt, yt is the point you want to drw through\n// x0, y0 and x2, y2 are the end points of the curve\nx1 = xt * 2 - (x0 + x2) / 2;\ny1 = yt * 2 - (y0 + y2) / 2;\ncontext.moveTo(x0, y0);\ncontext.quadraticCurveTo(x1, y1, x2, y2);"
+    },
+    {
+      "type": "markdown",
+      "data": "## 其他形式的曲线"
+    },
+    {
+      "type": "text",
+      "data": "除了 context.quadraticCurveTo 方法之外，还有其他一些用于绘制曲线的方法，每个方法都有各自的形状特征："
+    },
+    {
+      "type": "markdown",
+      "data": "* bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y): 增加一个到当前路径的点，并由三次贝塞尔曲线连接两个控制点；\n* arcTo(cp1x, cp1y, cp2x, cp2y, x, y): 使用两个控制点和指定半径为连接到前一个点的直线路径添加一个弧度；\n* arc(x, y, radius, startAngle, endAngle [, antiClockwise]): 为连接到前一个点的直线路径添加一个弧度，该弧度将是以 x、y 作为圆心，以 radius 作为半径的一个圆的一部分，该部分的起始角度和终止角度分别由 startAngle 和 endAngle 指定。"
+    }
+  ]
+}
