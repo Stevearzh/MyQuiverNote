@@ -1,0 +1,41 @@
+{
+  "title": "速度向量和加速度",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## 将角速度分解为 x、y 轴上的速度向量"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "vx = speed * Math.cos(angle);\nvy = speed * Math.sin(angle);"
+    },
+    {
+      "type": "markdown",
+      "data": "## 将角加速度（作用域物体上的力）分解为 x、y 轴上的加速度"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "ax = force * Math.cos(angle);\nay = force * Math.sin(angle);"
+    },
+    {
+      "type": "markdown",
+      "data": "## 将加速度加入速度向量"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "vx += ax;\nvy += ay;"
+    },
+    {
+      "type": "markdown",
+      "data": "## 将速度向量加入位置坐标"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "object.x += vx;\nobject.y += vy;"
+    }
+  ]
+}

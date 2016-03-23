@@ -1,0 +1,99 @@
+{
+  "title": "操纵像素",
+  "cells": [
+    {
+      "type": "text",
+      "data": "通过绘图 API 可以直接操纵组成 canvas 上图像的各个像素。可以创建、读取并写入像素数据，从而得以在 Web 浏览器上创造出一些先进的视觉效果与动画。"
+    },
+    {
+      "type": "markdown",
+      "data": "## 获取像素数据"
+    },
+    {
+      "type": "text",
+      "data": "直接访问像素的功能是由 canvas 上下文中的 ImageData 对象提供的。调用以下代码则可以获得 canvas 元素上一个矩形区域的像素数据："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let imagedata = context.getImageData(x, y, width, height);"
+    },
+    {
+      "type": "text",
+      "data": "这里返回的对象包含 3 个属性：width、height 与 data。width 与 height 属性用于表示以像素为单位的图像大小，而 data 则是一个表示图像数据的数组。"
+    },
+    {
+      "type": "text",
+      "data": "指定一个矩形的大小则可以新建一个空白的 ImageData 对象："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let imagedata = context.createImageData(width, height);"
+    },
+    {
+      "type": "text",
+      "data": "或者，也可以为该方法传入另一个 ImageData 对象，即 context.createImageData(anotherImageData)。此时会创建一个与传入参数相同大小的新对象，因为该方法并不会复制输入参数中的像素数据，所以新建对象中的像素为透明黑色。"
+    },
+    {
+      "type": "markdown",
+      "data": "*当读取像素数据时，请确保任何渲染到 canvas 上的外部资料（图像或视频）来自于与运行脚本所在 HTML 文件相同的域。如果把一个跨域的图像绘制到 canvas 上，它会被标为脏数据，也再无法从中读取像素数据。为了避免这一情况，会把一个安全异常抛到调试控制台。这一行为是在 HTML5 规范中定义的，并且这一行为与大多数 Web 浏览器所遵循的同域安全策略是一致的。所以，你甚至有可能无法在本地机器上测试某些示例，除非浏览器提供选项让绕过这一安全策略，否则需要将所有资料上传到一台服务器上并在那里进行测试。*  "
+    },
+    {
+      "type": "text",
+      "data": "ImageData 对象的 data 属性返回一个一维数组，该数组包含构成像素颜色每个合成色的值，它们以 RGBA 的顺序出现在数组中，并通过 0~255 之间的整数表示（注意：alpha 值也在此范围内，而不是 CSS 风格的颜色格式中使用的 0.0~1.0）。这些像素以从左到右，从上到下的顺序排列。"
+    },
+    {
+      "type": "text",
+      "data": "以下的数组表现了一个 2x2 正方形范围内的图像数据，其中的 4 个像素都设置为红色："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let pixels = [\n  255, 0, 0, 255,\n  255, 0, 0, 255,\n  255, 0, 0, 255,\n  255, 0, 0, 255\n];"
+    },
+    {
+      "type": "text",
+      "data": "通过指定数组的下标可以访问任何一个特定的像素。因为每个像素由数组中的 4 个元素表示，所以可以通过以下方式逐个遍历图像数据中的每个像素："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "for (let offset = 0, len = pixels.length; offset < len; offset += 4) {\n  let r = pixels[offset],       // red\n      g = pixels[offset + 1],   // green\n      b = pixels[offset + 2],   // blue\n      a = pixels[offset + 3];   // alpha\n}"
+    },
+    {
+      "type": "text",
+      "data": "若希望访问图像中某个特定坐标的像素，则采用以下方法获得该像素在数组中的偏移量："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let offset = (xpos + ypos * imagedata.width) * 4;"
+    },
+    {
+      "type": "markdown",
+      "data": "## 绘制像素数据"
+    },
+    {
+      "type": "text",
+      "data": "context.putImageData(imagedata, x, y) 方法用于将一个 ImageData 对象绘制到 canvas 上，其中的参数 x、y 指定了所绘对象相对 canvas 左上角的坐标。"
+    },
+    {
+      "type": "text",
+      "data": "可以在图像数据数组中定位某个像素，并修改其三原色的值从而改变该像素的颜色。将更新后的像素值作为第一个参数传入 putImageData 方法，就可以将其重新绘制到 canvas 上。"
+    },
+    {
+      "type": "text",
+      "data": "例如，为了清除 canvas 上一幅图像中红色通道的值，可以遍历每一个像素，将它们的红色部分的值都设置为 0："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "let imagedata = context.getImageData(0, 0, canvas.width, canvas.height),\n    pixels    = imagedata.data;\n    \nfor (let offset = 0, len = pixels.length; offset < len; offset += 4) {\n  pixels[offset]     = 0;                    // red\n  pixels[offset + 1] = pixels[offset + 1];   // green\n  pixels[offset + 2] = pixels[offset + 2];   // blue\n  pixels[offset + 3] = pixels[offset + 3];   // alpha\n}"
+    },
+    {
+      "type": "text",
+      "data": "这里将图像数据赋予变量 pixels。（因为 JavaScript 对象和这里的数组都是通过引用赋值的，所以对 pixels 数组的修改会作用到 imagedata.data 对象上，因为它们本质上是同一个对象。）在程序中遍历了每个像素，每次跳过 4 个元素并为其设置新的颜色值。当循环结束后，把更新后的 imagedata 对象重新绘制到 canvas 上。"
+    }
+  ]
+}

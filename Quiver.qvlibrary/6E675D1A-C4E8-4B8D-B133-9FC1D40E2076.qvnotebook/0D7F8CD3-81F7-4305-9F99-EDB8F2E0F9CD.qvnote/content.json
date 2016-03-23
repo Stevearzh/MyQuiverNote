@@ -1,0 +1,50 @@
+{
+  "title": "边界与摩擦力",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "## 移除越界物体"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "if (\n  object.x - object.width / 2 > right ||\n  object.x + object.width / 2 < left ||\n  object.y - object.height / 2 > bottom ||\n  object.y + object.height / 2 < top\n) {\n  // code to remove object\n}"
+    },
+    {
+      "type": "markdown",
+      "data": "## 重置越界物体"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "if (\n  object.x - object.width / 2 > right ||\n  object.x + object.width / 2 < left ||\n  object.y - object.height / 2 > bottom ||\n  object.y + object.height / 2 < top\n) {\n  // reset object position and velocity\n}"
+    },
+    {
+      "type": "markdown",
+      "data": "## 越界物体的屏幕环绕"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "if (object.x - object.width / 2 > right) {\n  object.x = left - object.width / 2;\n} else if (object.x + object.width / 2 < left) {\n  object.x = right + object.width / 2;\n} else if (object.y - object.height / 2 > bottom) {\n  object.y = top - object.height / 2;\n} else if (object.y + object.height / 2 < top) {\n  object.y = bottom + object.height / 2;\n}"
+    },
+    {
+      "type": "markdown",
+      "data": "## 应用摩擦力（正确方法）"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "speed = Math.sqrt(vx * vx + vy * vy);\nangle = Math.atan2(vy, vx);\n\nif (speed > friction) {\n  speed -= friction;\n} else {\n  speed = 0;\n}\n\nvx = Math.cos(angle) * speed;\nvy = Math.sin(angle) * speed;"
+    },
+    {
+      "type": "markdown",
+      "data": "## 应用摩擦力（简便方法)"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "vx *= friction;\nvy *= friction;"
+    }
+  ]
+}

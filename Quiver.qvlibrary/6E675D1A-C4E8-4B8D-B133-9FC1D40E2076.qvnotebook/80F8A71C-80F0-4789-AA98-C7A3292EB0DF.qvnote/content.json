@@ -1,0 +1,43 @@
+{
+  "title": "使用视频元素",
+  "cells": [
+    {
+      "type": "text",
+      "data": "除了可以将一幅静止的图片绘制到 cnavas 之外，canvas 还支持逐帧渲染的视频渲染。"
+    },
+    {
+      "type": "text",
+      "data": "<span style=\"color: rgb(221, 221, 221);\">为了在文件中引入一段视频，可以在 HTML 文件中加入以下元素：</span>"
+    },
+    {
+      "type": "code",
+      "language": "html",
+      "data": "<video controls autobuffer>\n  <source src=\"movieclip.mp4\" type=\"video/mp4\">\n  <source src=\"movieclip.webm\" type=\"video/webm\">\n  <source src=\"movieclip.ogv\" type=\"video/ogg\">\n  <p>This browser does not support the <code>video</code> element.</p>\n</video>"
+    },
+    {
+      "type": "text",
+      "data": "这里，controls 属性会为视频播放加入播放和停止按钮，而 autobuffer 属性则会通知浏览器立即下载视频文件，这样当用户单击播放按钮后就可以立即播放视频。&lt;p&gt; 元素则用于在用户浏览器不支持 HTML5 视频元素时给予相应的提示，而且当浏览器支持 HTML5 视频元素时，不会出现这段提示。"
+    },
+    {
+      "type": "text",
+      "data": "这里用到了多个 &lt;source&gt; 标签，它们为视频格式提供了多种选择。由于授权许可的限制，不同浏览器支持不同的视频文件格式。为了确保视频可以在各个支持 HTML5 的浏览器上正常播放，必须提供多个版本的视频文件。"
+    },
+    {
+      "type": "markdown",
+      "data": "* MP4: IE、Safari\n* WebM/Ogg: Chrome、Firefox、Opera"
+    },
+    {
+      "type": "text",
+      "data": "以下示例中，载入了一段视频并将其逐帧渲染到 canvas 元素上。由于一段视频本质上就是按顺序播放的一系列静止的图像，因此 canvas 元素会在一个动画循环中不断绘制视频中的当前帧。在该文件中把 canvas 元素设置成与视频一样的大小以便能够展示完整的一帧图像："
+    },
+    {
+      "type": "code",
+      "language": "html",
+      "data": "<!DOCTYPE html>\n\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title>Video Frames</title>\n    <link rel=\"stylesheet\" href=\"style.css\">\n    <style>\n      #movieclip {\n        display: none;\n      }\n    </style>\n  </head>\n  <body>\n    <canvas id=\"canvas\" width=\"640\" height=\"360\"></canvas>\n    \n    <video id=\"movieclip\" width=\"640\" height=\"360\" autoplay>\n      <source src=\"movieclip.mp4\" type=\"video/mp4\">\n      <source src=\"movieclip.webm\" type=\"video/webm\">\n      <source src=\"movieclip.ogv\" type=\"video/ogg\">\n      <p>This browser does not support the <code>video</code> element.</p>\n    </video>\n    \n    <script src=\"utils.js\"></script>\n    <script>\n      window.onload = () => {\n        let canvas  = document.getElementById('canvas'),\n            context = canvas.getContext('2d'),\n            video   = document.getElementById('movieclip');\n            \n        (function drawFrame() {\n          window.requestAnimationFrame(drawFrame, canvas);\n          \n          context.drawImage(video, 0, 0);\n        })();\n      };\n    </script>\n  </body>\n</html>"
+    },
+    {
+      "type": "text",
+      "data": "向 video 元素添加了 autoplay 属性，这样它就会在页面加载时自动播放。之所以这么做是因为其 HTML 元素被 CSS 所隐藏了，而我们又无法访问到其内置的控件，这样我们就无法通过代码播放视频了。"
+    }
+  ]
+}

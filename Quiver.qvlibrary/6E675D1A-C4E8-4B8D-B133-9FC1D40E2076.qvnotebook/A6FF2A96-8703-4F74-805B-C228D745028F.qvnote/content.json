@@ -4,6 +4,44 @@
     {
       "type": "text",
       "data": "有两种方式用于在动画中访问外部图片：在脚本运行过程中加载一个 URL 或使用 DOM 接口访问一个内嵌在 HTML 元素中的图片元素。当图片加载完成后，再使用绘图 API 将其渲染到 canvas 元素上。"
+    },
+    {
+      "type": "markdown",
+      "data": "## 加载图片"
+    },
+    {
+      "type": "text",
+      "data": "为了实现在运行时加载一张图片，可以创建一个 Image 对象并将其 src 属性设置为某个图片文件的 URL 路径。当图片加载完成后，它就会执行其 onload 方法所关联的回调函数。在以下示例中，在图片加载完成后将其绘制到 canvas 元素上："
+    },
+    {
+      "type": "code",
+      "language": "html",
+      "data": "<!DOCTYPE html>\n\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title>Load Image</title>\n    <link rel=\"stylesheet\" href=\"style.css\">\n  </head>\n  <body>\n    <canvas id=\"canvas\" width=\"400\" height=\"400\"></canvas>\n    <script>\n      window.onload = () => {\n        let canvas  = document.getElementById('canvas'),\n            context = canvas.getContext('2d'),\n            image   = new Image();\n            \n        image.src = 'picture.jpg';\n        image.onload = () => {\n          context.drawImage(image, 0, 0);\n        };\n      };\n    </script>\n  </body>\n</html>"
+    },
+    {
+      "type": "text",
+      "data": "使用 context.drawImage 方法将图片绘制到 canvas 元素上，该方法接受一个图片元素与 canvas 上的一个 x、y 坐标。特意把这段代码放在 image.onload 方法的回调函数，以免该方法在图片加载完成前就执行而无法渲染任何内容。"
+    },
+    {
+      "type": "text",
+      "data": "context.drawImage 方法有以下 3 种调用方式，分别使用多个参数："
+    },
+    {
+      "type": "markdown",
+      "data": "* drawImage(image, dx, dy): 在 canvas 的 (dx, dy) 坐标上绘制一张图片，(dx, dy) 是图片左上角所在的位置；\n* drawImage(image, dx, dy, dw, dh): 分别根据 dw、dh 的值设定图片的宽度与高度，并将其绘制在 canvas 的 (dx, dy) 坐标；\n* drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh): 将图片裁剪到矩形区域 (sx, sy, sw, sh) 中，并缩放至 (dh, dw)，再将其绘制到 (dx, dy) 坐标。"
+    },
+    {
+      "type": "markdown",
+      "data": "##  使用图片元素"
+    },
+    {
+      "type": "text",
+      "data": "也可以使用 DOM 接口访问 HTML 文件中的一个图片元素，该方法的优点在于在脚本执行时图片已经完全加载完成。当采用该方法时，请记得使用 CSS 隐藏图片元素，否则你可能会看到图片在文件中渲染了两次："
+    },
+    {
+      "type": "code",
+      "language": "html",
+      "data": "<!DOCTYPE html>\n\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title>Embed Image</title>\n    <link rel=\"stylesheet\" href=\"style.css\">\n    <style>\n      #picture {\n        display: none;\n      }\n    </style>\n  </head>\n  <body>\n    <canvas id=\"canvas\" width=\"400\" height=\"400\"></canvas>\n    <img id=\"picture\" src=\"picture.jpg\">\n    <script>\n      window.onload = () => {\n        let canvas  = document.getElementById('canvas'),\n            context = canvas.getContext('2d'),\n            image   = document.getElementById('picture');\n            \n        context.drawImage(image, 0, 0);\n      };\n    </script>\n  </body>\n</html>"
     }
   ]
 }
