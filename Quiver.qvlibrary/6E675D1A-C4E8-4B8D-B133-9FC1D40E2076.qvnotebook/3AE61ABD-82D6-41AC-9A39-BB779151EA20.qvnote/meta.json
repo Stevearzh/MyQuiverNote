@@ -1,8 +1,8 @@
 {
   "created_at" : 1458362852,
   "tags" : [
-    "animation",
-    "javascript"
+    "Animation",
+    "JavaScript"
   ],
   "title" : "使用 requestAnimationFrame 的动画循环",
   "updated_at" : 1458415025,

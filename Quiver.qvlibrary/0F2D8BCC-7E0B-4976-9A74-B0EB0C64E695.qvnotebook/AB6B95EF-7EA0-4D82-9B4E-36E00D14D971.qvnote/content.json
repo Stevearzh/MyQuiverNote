@@ -1,0 +1,60 @@
+{
+  "title": "Did you mean ...? (3kyu)",
+  "cells": [
+    {
+      "type": "text",
+      "data": "<div>I'm sure, you know Google's \"Did you mean ...?\", when you entered a search term and mistyped a word. In this kata we want to implement something similar.</div>\n"
+    },
+    {
+      "type": "text",
+      "data": "<div>You'll get an entered term (lowercase string) and an array of known words (also lowercase strings). Your task is to find out, which word from the dictionary is most similar to the entered one. The similarity is described by the minimum number of letters you have to add, remove or replace in order to get from the entered word to one of the dictionary. The lower the number of required changes, the higher the similarity between each two words.</div>\n"
+    },
+    {
+      "type": "text",
+      "data": "<div>Same words are obviously the most similar ones. A word that needs one letter to be changed is more similar to another word that needs 2 (or more) letters to be changed. E.g. the mistyped term <code>berr</code> is more similar to <code>beer</code> (1 letter to be replaced) than to <code>barrel</code> (3 letters to be changed in total).</div>\n"
+    },
+    {
+      "type": "text",
+      "data": "<div>Extend the dictionary in a way, that it is able to return you the most similar word from the list of known words.</div>\n"
+    },
+    {
+      "type": "text",
+      "data": "<div>Code Examples:</div>\n"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "fruits = new Dictionary(['cherry', 'pineapple', 'melon', 'strawberry', 'raspberry']);\nfruits.findMostSimilar('strawbery'); // must return \"strawberry\"\nfruits.findMostSimilar('berry'); // must return \"cherry\"\n\nthings = new Dictionary(['stars', 'mars', 'wars', 'codec', 'codewars']);\nthings.findMostSimilar('coddwars'); // must return \"codewars\"\n\nlanguages = new Dictionary(['javascript', 'java', 'ruby', 'php', 'python', 'coffeescript']);\nlanguages.findMostSimilar('heaven'); // must return \"java\"\nlanguages.findMostSimilar('javascript'); // must return \"javascript\" (same words are obviously the most similar ones)"
+    },
+    {
+      "type": "text",
+      "data": "<div>I know, many of you would disagree that java is more similar to heaven than all the other ones, but in this kata it is ;)</div>\n"
+    },
+    {
+      "type": "text",
+      "data": "<div>Additional notes:</div>\n"
+    },
+    {
+      "type": "text",
+      "data": "<ul>\n<li>there is always exactly one possible solution</li></ul>\n"
+    },
+    {
+      "type": "text",
+      "data": "<div>Your Solution:</div>\n"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "function Dictionary(words) {\n  this.words = words;\n}\n\nfunction calcDistance(source, target) {\n  const n = source.length,\n        m = target.length;  \n        \n  if (!n || !m) {\n    return 0;\n  }\n  \n  let matrix = [], i, j;\n      \n  for (i = 0; i < n; ++i) {\n    matrix.push([]);\n  }\n  \n  for (i = 1; i < n; ++i) {\n    matrix[i].push(i);\n  }\n  \n  for (i = 1; i < m; ++i) {\n    matrix[0][i] = i;\n  }\n  \n  matrix[0][0] = 0;\n  \n  for (i = 1; i < n; ++i) {\n    for (j = 1; j < m; ++j) {\n      let cost;\n      \n      if (source[i - 1] === target[j - 1]) {\n        cost = 0;\n      } else {\n        cost = 1;\n      }\n      \n      let above = matrix[i - 1][j] + 1,\n          left = matrix[i][j - 1] + 1,\n          diag = matrix[i - 1][j - 1] + cost;\n          \n      matrix[i].push(Math.min(above, Math.min(left, diag)));\n    }\n  }\n  \n  return matrix[n - 1][m - 1];\n}\n\nDictionary.prototype.findMostSimilar = function (term) {\n  let mi, nu, i;\n  \n  for (i = 0; i < this.words.length; ++i) {\n    let count = calcDistance(this.words[i], term);\n     \n    if(i === 0) {\n      mi = i,  nu = count;\n     } else if (nu > count) {\n       mi = i, nu = count;\n     }\n   };\n   \n   return(this.words[mi]);\n};"
+    },
+    {
+      "type": "text",
+      "data": "<div>Your Test Cases:</div>\n"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "function TestDictionary(spec) {\n  var matcher = new Dictionary(spec.words);\n  spec.expectations.forEach(function (e) {\n    Test.expect(\n      matcher.findMostSimilar(e.query) == e.nearest\n    , 'expected findMostSimilar(\"' + e.query + '\") == \"' + e.nearest + '\"'\n    );\n  });\n}\n\nTestDictionary({\n  words: ['cherry', 'pineapple', 'melon', 'strawberry', 'raspberry'],\n  expectations: [\n    { query:   'strawbery',\n      nearest: 'strawberry'\n    },\n    { query:   'berry',\n      nearest: 'cherry'\n    }\n  ],\n});\n\nTestDictionary({\n  words: Test.randomize(['javascript', 'java', 'ruby', 'php', 'python', 'coffeescript']),\n  expectations: [\n    { query:   'heaven',\n      nearest: 'java'\n    },\n    { query:   'javascript',\n      nearest: 'javascript'\n    }\n  ],\n});"
+    }
+  ]
+}

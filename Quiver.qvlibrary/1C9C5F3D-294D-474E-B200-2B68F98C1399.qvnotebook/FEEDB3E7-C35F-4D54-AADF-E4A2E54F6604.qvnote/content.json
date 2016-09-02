@@ -1,0 +1,41 @@
+{
+  "title": "02. 创建一个类",
+  "cells": [
+    {
+      "type": "text",
+      "data": "在 JavaScript 中创建一个类很容易，首先声明一个函数保存在一个变量里。按编程习惯一般将这个代表类的变量名首字母大写。然后在这个函数（类）的内部通过对 this（函数内部自带的一个变量，用于指向当前这个对象）变量添加属性或者方法来实现对类添加属性或者方法，例如："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "var Book = function (id, bookname, price) {\n  this.id       = id;\n  this.bookname = bookname;\n  this.price    = price;\n};"
+    },
+    {
+      "type": "text",
+      "data": "也可以通过在类的原型（类也是一个对象，所以也有原型 prototype）上添加属性和方法，有两种方式，一种是一一为原型对象属性赋值，另一种则是将一个对象赋值给类的原型对象。例如："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "Book.prototype.display = function () {\n  // 展示这本书\n};"
+    },
+    {
+      "type": "text",
+      "data": "或者"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "Book.prototype = {\n  display: function () {}\n};"
+    },
+    {
+      "type": "text",
+      "data": "这样就将所需要的方法和属性都封装在抽象的 Book 类里面了，当使用功能方法时，不能直接使用这个 Book 类，需要用 new 关键字来实例化（创建）新的对象。使用实例化对象的属性或者方法时，可以通过点语法访问，例如："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "var book = new Book(10, 'JavaScript 设计模式', 50);\nconsole.log(book.bookname);     // JavaScript 设计模式"
+    }
+  ]
+}

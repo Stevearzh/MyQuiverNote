@@ -1,0 +1,31 @@
+{
+  "title": "05. 闭包实现",
+  "cells": [
+    {
+      "type": "text",
+      "data": "有时将类的静态变量通过闭包来实现："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// 利用闭包实现\nvar Book = (function () {\n  // 静态私有变量\n  var bookNum = 0;\n  // 静态私有方法\n  function checkBook(name) {}\n  // 返回构造函数\n  return function (newId, newName, newPrice) {\n    // 私有变量\n    var name, price;\n    // 私有方法\n    function checkID(id) {}\n    // 特权方法\n    this.getName = function () {};\n    this.getPrice = function () {};\n    this.setName = function () {};\n    this.setPrice = function () {};\n    // 公有属性\n    this.id = newId;\n    // 公有方法\n    this.copy = function () {};\n    bookNum++;\n    if (bookNum > 100) {\n      throw new Error('我们仅出版 100 本书.');\n    }\n    // 构造器\n    this.setName(newName);\n    this.setPrice(newPrice);\n  };\n})();\n\nBook.prototype = {\n  // 静态公有属性\n  isJSBook: false,\n  // 静态公有方法\n  display: function () {}\n};"
+    },
+    {
+      "type": "text",
+      "data": "闭包是有权访问另外一个函数作用域中变量的函数，即在一个函数内部创建另外一个函数。"
+    },
+    {
+      "type": "text",
+      "data": "我们将这个闭包作为创建对象的构造函数，这样它既是闭包又是可实例对象的函数，即可访问到类函数作用域中的变量，如 bookNum 这个变量，此时这个变量叫静态私有变量，并且 checkBook() 可称之为静态私有方法。当然，闭包内部也有其自身的私有变量以及私有方法如 price，checkID()。"
+    },
+    {
+      "type": "text",
+      "data": "但是，在闭包外部添加原型属性和方法看上去像似脱离了闭包这个类，所以有时候在闭包内部实现一个完整的类然后将其返回，如下："
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// 利用闭包实现\nvar Book = (function () {\n  // 静态私有变量\n  var bookNum = 0;\n  // 静态私有方法\n  function checkBook(name) {};\n  // 创建类\n  function _book(newId, newName, newPrice) {\n    // 私有变量\n    var name, price;\n    // 私有方法\n    function checkID(id) {};\n    // 特权方法\n    this.getName = function () {};\n    this.getPrice = function () {};\n    this.setName = function () {};\n    this.setPrice = function () {};\n    // 公有属\n    this.id = newId;\n    // 公有方法\n    this.copy = function () {};\n    bookNum++;\n    if (bookNum > 100) {\n      throw new Error('我们仅出版 100 本书.');\n    }\n    // 构造器\n    this.setName(newName);\n    this.setPrice(newPrice);\n  };\n  // 构造原型\n  _book.prototype = {\n    // 静态公有属性\n    isJSBook: false,\n    // 静态公有方法\n    display: function () {}\n  };\n  // 返回类\n  return _book;\n})();"
+    }
+  ]
+}

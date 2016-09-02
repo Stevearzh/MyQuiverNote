@@ -1,0 +1,10 @@
+{
+  "title": "01. 灵活的语言——JavaScript",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "Function.prototype.addMethod = function (name, fn) {\n  this.prototyp[name] = fn;\n  return this;\n};\n\nvar Methods = function () {};\nMethods.addMethod('checkName', function () {\n  // 验证姓名\n  return this;\n}).addMethod('checkEmail', function () {\n  // 验证邮箱\n  return this;\n});\n\nvar m = new Methods();\nm.checkName().checkEmail();"
+    }
+  ]
+}

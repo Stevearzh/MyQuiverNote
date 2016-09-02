@@ -1,8 +1,8 @@
 {
   "created_at" : 1458464175,
   "tags" : [
-    "canvas",
-    "javascript"
+    "Canvas",
+    "JavaScript"
   ],
   "title" : "使用 lineTo 与 moveTo 绘制路径",
   "updated_at" : 1458465876,

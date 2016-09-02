@@ -1,0 +1,44 @@
+{
+  "title": "Pascal's Triangle (4 kyu)",
+  "cells": [
+    {
+      "type": "text",
+      "data": "<img src=\"quiver-image-url/99FD119BE3CA7616AE635B28E7181F7E.gif\" alt=\"PascalTriangleAnimated2.gif\">"
+    },
+    {
+      "type": "text",
+      "data": "Wikipedia article on Pascal's Triangle: <a href=\"http://en.wikipedia.org/wiki/Pascal\" s_triangle'=\"\">http://en.wikipedia.org/wiki/Pascal's_triangle</a>"
+    },
+    {
+      "type": "text",
+      "data": "Write a function that, given a depth (n), returns a single-dimensional array representing Pascal's Triangle to the n-th level."
+    },
+    {
+      "type": "text",
+      "data": "For example:"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "pascalsTriangle(4) == [1,1,1,1,2,1,1,3,3,1]"
+    },
+    {
+      "type": "text",
+      "data": "Your Solution:"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "function step(n) {\n  let result = 1;\n  \n  if (n) {\n    for (let i = n; i > 0; --i) {\n      result *= i;\n    }\n  }\n  \n  return result;\n}\n\nfunction pascalsTriangleRow(n) {\n  let result = [];\n  \n  for (let i = 0; i < n; ++i) {\n    result.push(Math.round(step(n-1) / (step(i) * step(n-1-i))));\n  }\n  \n  return result;\n}\n\nfunction pascalsTriangle(n) {\n  //return a flat array representing the values of Pascal's Triangle to the n-th level\n  if (n === 1) {\n    return pascalsTriangleRow(1);\n  } else {\n    return pascalsTriangle(n - 1).concat(pascalsTriangleRow(n));\n  }\n}"
+    },
+    {
+      "type": "text",
+      "data": "\u0016Your Test Cases:"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// Create your own tests here. These are some of the methods available:\n//  Test.expect(boolean, [optional] message) \n//  Test.assertEquals(actual, expected, [optional] message)\n//  Test.assertSimilar(actual, expected, [optional] message)\n//  Test.assertNotEquals(actual, expected, [optional] message)"
+    }
+  ]
+}

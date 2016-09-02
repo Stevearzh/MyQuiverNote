@@ -1,0 +1,10 @@
+{
+  "title": "06. 创建对象的安全模式",
+  "cells": [
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// 图书安全类\nvar Book = function (title, time, type) {\n  // 判断执行过程中 this 是否是当前这个对象（如果是说明是用 new 创建的）\n  if (this instanceof Book) {\n    this.title = title;\n    this.time = time;\n    this.type = type;\n    // 否则重新创建这个对象\n  } else {\n    return new Book(title, time, type);\n  }\n};"
+    }
+  ]
+}

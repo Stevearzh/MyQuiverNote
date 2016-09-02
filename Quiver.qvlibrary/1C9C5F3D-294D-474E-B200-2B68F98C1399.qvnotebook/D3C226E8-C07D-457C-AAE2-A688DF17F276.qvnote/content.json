@@ -1,0 +1,25 @@
+{
+  "title": "03. 原型对象 prototype",
+  "cells": [
+    {
+      "type": "text",
+      "data": "通过 this 添加的属性、方法是在当前对象上添加的，然而 JavaScript 是一种基于原型 prototype 的语言，所以每创建一个对象时（当然在 JavaScript 中函数也是一种对象），它都有一个原型 prototype 用于指向其继承的属性、方法。"
+    },
+    {
+      "type": "text",
+      "data": "这样，通过 prototype 继承的方法并不是对象自身的，所以在使用这些方法时，需要通过 prototype 一级一级查找来得到。"
+    },
+    {
+      "type": "text",
+      "data": "这样你会发现通过 this 定义的属性或者方法是该对象自身拥有的，所以我们每次通过类创建一个新的对象时，this 指向的属性和方法都会得到相应的创建，而通过 prototype 继承的属性或者方法是每个对象通过 prototype 访问到的，所以每次通过类创建一个新的对象时这些属性和方法不会再次创建。（如下图）<font color=\"#323232\" style=\"background-color: rgb(254, 250, 0);\"><br></font>"
+    },
+    {
+      "type": "text",
+      "data": "<img src=\"quiver-image-url/4821FA2A7DA68387E509EC251E2D0ABA.png\" alt=\"prototype.png\">"
+    },
+    {
+      "type": "text",
+      "data": "图中的 constructor 是一个属性，当创建一个函数或者对象时都会为其创建一个原型对象 prototype，在 prototype 对象中又会像函数中创建 this 一样创建一个 constructor 属性，那么 constructor 属性指向的就是拥有整个原型对象的函数或对象，例如在本例中 Book prototype 中的 constructor 属性指向的就是 Book 类对象。"
+    }
+  ]
+}

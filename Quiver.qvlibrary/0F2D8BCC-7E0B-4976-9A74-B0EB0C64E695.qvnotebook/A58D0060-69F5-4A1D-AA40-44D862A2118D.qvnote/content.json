@@ -1,0 +1,53 @@
+{
+  "title": "Base Conversion (4 kyu)",
+  "cells": [
+    {
+      "type": "text",
+      "data": "<div>In this kata you have to implement a base converter, which converts between arbitrary bases / alphabets. Here are some pre-defined alphabets:</div>\n"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "var Alphabet = {\n  BINARY:        '01',\n  OCTAL:         '01234567',\n  DECIMAL:       '0123456789',\n  HEXA_DECIMAL:  '0123456789abcdef',\n  ALPHA_LOWER:   'abcdefghijklmnopqrstuvwxyz',\n  ALPHA_UPPER:   'ABCDEFGHIJKLMNOPQRSTUVWXYZ',\n  ALPHA:         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',\n  ALPHA_NUMERIC: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'\n};"
+    },
+    {
+      "type": "text",
+      "data": "<div>The function <code>convert()</code> should take an input (string), the source alphabet (string) and the target alphabet (string). You can assume that the input value always consists of characters from the source alphabet. You don't need to validate it.</div>\n"
+    },
+    {
+      "type": "text",
+      "data": "<p>Examples:</p>\n"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "// convert between numeral systems\nconvert(\"15\", Alphabet.DECIMAL, Alphabet.BINARY); // should return \"1111\"\nconvert(\"15\", Alphabet.DECIMAL, Alphabet.OCTAL); // should return \"17\"\nconvert(\"1010\", Alphabet.BINARY, Alphabet.DECIMAL); // should return \"10\"\nconvert(\"1010\", Alphabet.BINARY, Alphabet.HEXA_DECIMAL); // should return \"a\"\n\n// other bases\nconvert(\"0\", Alphabet.DECIMAL, Alphabet.ALPHA); // should return \"a\"\nconvert(\"27\", Alphabet.DECIMAL, Alphabet.ALPHA_LOWER); // should return \"bb\"\nconvert(\"hello\", Alphabet.ALPHA_LOWER, Alphabet.HEXA_DECIMAL); // should return \"320048\"\nconvert(\"SAME\", Alphabet.ALPHA_UPPER, Alphabet.ALPHA_UPPER); // should return \"SAME\""
+    },
+    {
+      "type": "text",
+      "data": "<div>Additional Notes:</div>\n"
+    },
+    {
+      "type": "text",
+      "data": "<ul>\n<li><p>The maximum input value can always be encoded in a number without loss of precision in JavaScript. In Haskell, intermediate results will probably be to large for <code>Int</code>.</p>\n</li><li><p>The function must work for any arbitrary alphabets, not only the pre-defined ones</p>\n</li><li><p>You don&#39;t have to consider negative numbers</p>\n</li></ul>\n"
+    },
+    {
+      "type": "text",
+      "data": "Your Solution:"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "function dec_pos(word, alphabet) {\n  for (let i = 0; i < alphabet.length; ++i) {\n    if (alphabet[i] === word) {\n      return i;\n    }\n  }\n  \n  return -1;\n}\n\nfunction n_to_dec(words, alphabet) {\n  const LEN = alphabet.length;\n  let value = 0;\n  \n  for (let i = 0; i < words.length; ++i) {\n    value += dec_pos(words[i], alphabet) * Math.pow(LEN, (words.length - i - 1));\n  }\n  \n  return value;\n}\n\nfunction dec_to_n(value, alphabet) {\n  if (value === 0) {\n    return alphabet[0];\n  }\n\n  const N = alphabet.length;\n  let result = '', tmp;\n  \n  while (value) {  \n    result = alphabet[value % N].concat(result);\n    value  = Math.floor(value / N);\n  }\n  \n  return result;\n}\n\nfunction convert(input, source, target) {\n  return dec_to_n(n_to_dec(input, source), target);\n}"
+    },
+    {
+      "type": "text",
+      "data": "Your Test Cases:"
+    },
+    {
+      "type": "code",
+      "language": "javascript",
+      "data": "describe('example tests', function() {\n  var bin = Alphabet.BINARY, oct = Alphabet.OCTAL, dec = Alphabet.DECIMAL, hex = Alphabet.HEXA_DECIMAL,\n      allow = Alphabet.ALPHA_LOWER, alup = Alphabet.ALPHA_UPPER, alpha = Alphabet.ALPHA, alnum = Alphabet.ALPHA_NUMERIC;\n  \n  it('should convert between numeral systems', function() {\n    Test.assertEquals(convert(\"15\", dec, bin), '1111', '\"15\" dec -> bin');\n    Test.assertEquals(convert(\"15\", dec, oct), '17', '\"15\" dec -> oct');\n    Test.assertEquals(convert(\"1010\", bin, dec), '10', '\"1010\" bin -> dec');\n    Test.assertEquals(convert(\"1010\", bin, hex), 'a', '\"1010\" bin -> hex');\n  });\n  \n  it('should convert between other bases', function() {\n    Test.assertEquals(convert(\"0\", dec, alpha), 'a', '\"0\" dec -> alpha');\n    Test.assertEquals(convert(\"27\", dec, allow), 'bb', '\"27\" dec -> alpha_lower');\n    Test.assertEquals(convert(\"hello\", allow, hex), '320048', '\"hello\" alpha_lower -> hex')\n    Test.assertEquals(convert(\"SAME\", alup, alup), 'SAME', '\"SAME\" alpha_upper -> alpha_upper');\n  });\n});"
+    }
+  ]
+}
